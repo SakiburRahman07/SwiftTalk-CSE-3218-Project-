@@ -26,99 +26,132 @@ struct WeatherView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                // Gradient background using light blue and indigo colors
-                LinearGradient(gradient: Gradient(colors: [Color(hex: "#B27179"), Color(hex: "#FFB37B"), Color(hex: "#FFF19C")]), startPoint: .top, endPoint: .bottom)
+                // Modern gradient background
+                LinearGradient(gradient: Gradient(colors: [
+                    Color(hex: "#1a1a1a"),
+                    Color(hex: "#2d3436")
+                ]), startPoint: .top, endPoint: .bottom)
                     .edgesIgnoringSafeArea(.all)
                 
-                VStack(spacing: 30) {
-                    Text("Select a Division")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                    
-                    Picker("Division", selection: $selectedDivision) {
-                        ForEach(divisions.keys.sorted(), id: \.self) { division in
-                            Text(division)
-                                .font(.headline)
-                                .foregroundColor(.white)
-                        }
-                    }
-                    .pickerStyle(WheelPickerStyle())
-                    .frame(height: 150)
-                    .clipped()
-                    .background(Color.white.opacity(0.4))
-                    .cornerRadius(15)
-                    .padding()
-
-                    Button(action: {
-                        if let city = divisions[selectedDivision] {
-                            weatherService.fetchWeather(for: city, countryCode: "BD")
-                        }
-                    }) {
-                        Text("Get Weather")
-                            .fontWeight(.bold)
-                            .frame(width: 200, height: 50)
-                            .background(Color.white)
-                            .foregroundColor(Color.blue)
-                            .cornerRadius(25)
-                            .shadow(radius: 10)
-                    }
-                    .padding()
-
-                    if let weather = weatherService.weather {
-                        // Weather card
-                        VStack(spacing: 20) {
-                            VStack {
-                                Text("Temperature: \(kelvinToCelsius(weather.main.temp))°C")
-                                    .font(.system(size: 28, weight: .semibold))
-                                    .foregroundColor(.white)
-                                
-                                Text("Feels Like: \(kelvinToCelsius(weather.main.feels_like))°C")
-                                    .font(.title2)
-                                    .foregroundColor(.white.opacity(0.8))
-                            }
-                            .padding()
-                            .background(Color.white.opacity(0.2))
-                            .cornerRadius(20)
-                            .shadow(radius: 15)
-
-                            // Weather icon and description
-                            if let weatherIcon = weather.weather.first?.icon, let description = weather.weather.first?.description {
-                                AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(weatherIcon)@2x.png")) { image in
-                                    image.resizable()
-                                        .scaledToFit()
-                                        .frame(width: 100, height: 100)
-                                } placeholder: {
-                                    ProgressView()
-                                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: 25) {
+                        // City Selection Card
+                        VStack(alignment: .leading, spacing: 15) {
+                            Text("Location")
+                                .font(.system(size: 16, weight: .medium))
+                                .foregroundColor(.gray)
+                            
+                            Picker("Division", selection: $selectedDivision) {
+                                ForEach(divisions.keys.sorted(), id: \.self) { division in
+                                    Text(division)
+                                        .font(.title3)
                                 }
-                                
-                                Text(description.capitalized)
-                                    .font(.title2)
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.white)
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.white.opacity(0.1))
+                            .cornerRadius(15)
+                            .onChange(of: selectedDivision) { newDivision in
+                                if let city = divisions[newDivision] {
+                                    weatherService.fetchWeather(for: city, countryCode: "BD")
+                                }
                             }
                         }
                         .padding()
+                        .background(Color.black.opacity(0.3))
+                        .cornerRadius(20)
+                        .padding(.horizontal)
+                        
+                        // Weather Display
+                        if let weather = weatherService.weather {
+                            // Main Weather Card
+                            HStack(spacing: 20) {
+                                // Left side - Temperature
+                                VStack(alignment: .leading, spacing: 10) {
+                                    Text(kelvinToCelsius(weather.main.temp))
+                                        .font(.system(size: 60, weight: .bold))
+                                        .foregroundColor(.white)
+                                    + Text("°C")
+                                        .font(.system(size: 40, weight: .medium))
+                                        .foregroundColor(.white.opacity(0.8))
+                                    
+                                    Text("Feels like \(kelvinToCelsius(weather.main.feels_like))°C")
+                                        .font(.system(size: 16))
+                                        .foregroundColor(.gray)
+                                }
+                                
+                                Spacer()
+                                
+                                // Right side - Weather Icon
+                                if let weatherIcon = weather.weather.first?.icon {
+                                    AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(weatherIcon)@2x.png")) { image in
+                                        image.resizable()
+                                            .scaledToFit()
+                                            .frame(width: 100, height: 100)
+                                            .background(
+                                                Circle()
+                                                    .fill(Color.white.opacity(0.1))
+                                                    .frame(width: 110, height: 110)
+                                            )
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
+                                }
+                            }
+                            .padding(25)
+                            .background(
+                                RoundedRectangle(cornerRadius: 25)
+                                    .fill(LinearGradient(
+                                        gradient: Gradient(colors: [Color(hex: "#4a90e2"), Color(hex: "#3742fa")]),
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ))
+                            )
+                            .shadow(color: Color(hex: "#4a90e2").opacity(0.3), radius: 15, x: 0, y: 10)
+                            .padding(.horizontal)
+                            
+                            // Weather Details Card
+                            if let description = weather.weather.first?.description {
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 15) {
+                                        Label(
+                                            description.capitalized,
+                                            systemImage: "cloud.fill"
+                                        )
+                                        .font(.system(size: 18, weight: .medium))
+                                        
+                                        Label(
+                                            selectedDivision,
+                                            systemImage: "location.fill"
+                                        )
+                                        .font(.system(size: 16))
+                                    }
+                                    .foregroundColor(.white)
+                                    Spacer()
+                                }
+                                .padding()
+                                .background(Color.white.opacity(0.1))
+                                .cornerRadius(20)
+                                .padding(.horizontal)
+                            }
+                        }
                     }
-                }
-                .padding()
-                .onAppear {
-                    // Fetch weather for default division (Dhaka)
-                    weatherService.fetchWeather(for: divisions["Dhaka"] ?? "Dhaka", countryCode: "BD")
+                    .padding(.vertical)
                 }
             }
-            .navigationTitle("Weather Info") // Set a title for the navigation bar
-            .navigationBarItems(leading: Button(action: {
-                dismiss() // Dismiss the current view when back button is tapped
-            }) {
-                HStack {
-                    Image(systemName: "chevron.left") // Back arrow icon
+            .navigationTitle("Weather")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(leading: Button(action: { dismiss() }) {
+                HStack(spacing: 3) {
+                    Image(systemName: "chevron.left")
                     Text("Back")
-                        .fontWeight(.semibold)
                 }
                 .foregroundColor(.white)
             })
+            .onAppear {
+                weatherService.fetchWeather(for: divisions["Dhaka"] ?? "Dhaka", countryCode: "BD")
+            }
         }
     }
 }

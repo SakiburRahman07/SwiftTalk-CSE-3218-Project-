@@ -1,0 +1,300 @@
+{
+  "department": {
+    "name": "Department of Computer Science and Engineering",
+    "university": "Khulna University of Engineering & Technology",
+    "contactNumber": "774318",
+    "email": "head@cse.kuet.ac.bd",
+    "updateDate": "29/11/2022"
+  },
+  "teachers": [
+    {
+      "name": "Head",
+      "extNo": "350",
+      "contactNumber": "01676-303920",
+      "email": "head@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Prof. Dr. M. M. A. Hashem",
+      "extNo": "351",
+      "contactNumber": "01714-003949",
+      "email": "hashem@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Prof. Dr. K. M. Azharul Hasan",
+      "extNo": "355",
+      "contactNumber": "01714-087273",
+      "email": "az@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Prof. Dr. Kazi Md. Rokibul Alam",
+      "extNo": "365",
+      "contactNumber": "01714-087216",
+      "email": "rokib@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Prof. Dr. Md. Aminul Haque Akhand",
+      "extNo": "363",
+      "contactNumber": "01714-087205",
+      "email": "akhand@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Prof. Dr. Pintu Chandra Shill",
+      "extNo": "375",
+      "contactNumber": "01676-303920",
+      "email": "pintu@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Prof. Dr. Sk. Md. Masudul Ahsan",
+      "extNo": "8369",
+      "contactNumber": "01714-087283",
+      "email": "smahsan@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Mr. Md. Abdus Salim Mollah",
+      "extNo": "357",
+      "contactNumber": "01714-087258",
+      "email": "salim9326@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Mr. Abdul Aziz",
+      "extNo": "8373",
+      "contactNumber": "01753-258105",
+      "email": "abdulaziz@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Mr. Prottoy Saha",
+      "extNo": "8365",
+      "contactNumber": "01762-086775",
+      "email": "prottoy@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Mr. Sunanda Das",
+      "extNo": "8375",
+      "contactNumber": "01762-583358",
+      "email": "sunanda@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Ms. Nazia Jahan Khan Chowdhury",
+      "extNo": "8351",
+      "contactNumber": "01682-039899",
+      "email": "naziajkc@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Ms. Dola Das",
+      "extNo": "8377",
+      "contactNumber": "01679-502532",
+      "email": "dola.das@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Mr. S. M. Taslim Uddin Raju",
+      "extNo": "8359",
+      "contactNumber": "01706-494350",
+      "email": "raju.taslim@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Mr. Md. Motaleb Hossen Manik",
+      "extNo": "8379",
+      "contactNumber": "01722-136214",
+      "email": "mh.manik@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Mr. Md. Ahsan Habib",
+      "extNo": "8371",
+      "contactNumber": "01773-756759",
+      "email": "mahabib@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Mr. Md. Shahidul Salim",
+      "extNo": "8355",
+      "contactNumber": "01779-866124",
+      "email": "ss@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Ms. Dipannita Biswas",
+      "extNo": "8363",
+      "contactNumber": "01817-533920",
+      "email": "Dipannitabiswas8316@gmail.com"
+    },
+    {
+      "name": "Mr. Md. Repon Islam",
+      "extNo": "367",
+      "contactNumber": "01521-427885",
+      "email": "cse.repon@gmail.com"
+    },
+    {
+      "name": "Mr. Md. Sakhawat Hossain",
+      "extNo": "377",
+      "contactNumber": "01863-651897",
+      "email": "sakhawat@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Mr. Md. Nazirul Hasan Shawon",
+      "extNo": "8381",
+      "contactNumber": "01609-810194",
+      "email": "shawon@cse.kuet.ac.bd"
+    },
+    {
+      "name": "Mr. Md. Badiuzzaman Shuvo",
+      "extNo": "359",
+      "contactNumber": "01521-402506",
+      "email": "badiuzzaman@cse.kuet.ac.bd"
+    }
+  ],
+  "officers": [
+    {
+      "name": "Mr. Muhammad Mizanur Rahman",
+      "extNo": "8367",
+      "contactNumber": "01911-207196",
+      "email": "mizanprince71@kuet.ac.bd"
+    },
+    {
+      "name": "Mr. Md. Abu Salah Musa",
+      "extNo": "350",
+      "contactNumber": "01672-800677",
+      "email": "musa.kuet@gmail.com"
+    },
+    {
+      "name": "Mr. Ripon Shaikh",
+      "contactNumber": "01643-143649",
+      "email": "ripon120535@gmail.com"
+    },
+    {
+      "name": "Mr. Md. Rokonuzzaman",
+      "contactNumber": "01714-087486",
+      "email": "rokon022@gmail.com"
+    },
+    {
+      "name": "Mr. Khandakar Saiful Islam",
+      "contactNumber": "01792-081282",
+      "email": "saiful.kln@gmail.com"
+    },
+    {
+      "name": "Mr. F. M. Sahabuddin",
+      "contactNumber": "01711-454147",
+      "email": "fmsahabuddin@gmail.com"
+    },
+    {
+      "name": "Mr. Md. Khairul Islam",
+      "contactNumber": "01714-087484",
+      "email": "dulalislam95@gmail.com"
+    },
+    {
+      "name": "Mr. Md. Ershad Ali",
+      "contactNumber": "01911-218737"
+    },
+    {
+      "name": "Mr. Md. Abdul Barek",
+      "contactNumber": "01922-964285"
+    },
+    {
+      "name": "Mr. Babul Hossen",
+      "contactNumber": "01913-211995",
+      "email": "bhossen1984@gmail.com"
+    },
+    {
+      "name": "Mr. Md. Jewel Moral",
+      "contactNumber": "01913-883561",
+      "email": "jewelmoral@gmail.com"
+    },
+    {
+      "name": "Mr. Gazi Abdul Kader",
+      "contactNumber": "01967-582379",
+      "email": "gakader111@gmail.com"
+    },
+    {
+      "name": "Mst. Tamanna Akther",
+      "contactNumber": "01306-066148",
+      "email": "bristyliya.kuet@gmail.com"
+    },
+    {
+      "name": "Mr. Md. Asaduzzaman",
+      "contactNumber": "01766-335215",
+      "email": "asadblc40@gmail.com"
+    },
+    {
+      "name": "Mr. Mohiuddin Biswas",
+      "contactNumber": "01783-913632",
+      "email": "mohiuddinbiswas61@gmail.com"
+    },
+    {
+      "name": "Mr. Md. Shahajalal",
+      "contactNumber": "01998-818002",
+      "email": "01733-309941"
+    }
+  ],
+  "labs": [
+    {
+      "name": "Computer Hardware and Interfacing Lab",
+      "roomNumber": "CSE 107",
+      "extNo": "8924",
+      "relatedPerson": "Mr. Md. Ershad Ali"
+    },
+    {
+      "name": "Artificial Intelligence and Robotics Laboratory",
+      "roomNumber": "CSE 108",
+      "extNo": "8926",
+      "relatedPerson": "Mr. Md. Jewel Moral"
+    },
+    {
+      "name": "Computer Networking and Multimedia Lab",
+      "roomNumber": "CSE 201",
+      "extNo": "8927",
+      "relatedPerson": "Mr. Md. Khairul Islam"
+    },
+    {
+      "name": "Software and Web Engineering Lab",
+      "roomNumber": "CSE 202",
+      "extNo": "8928",
+      "relatedPerson": "Mr. Abdul Barek"
+    },
+    {
+      "name": "Computer Language and Computing Lab",
+      "roomNumber": "CSE 104",
+      "extNo": "8932",
+      "relatedPerson": "Mr. Babul Hossen"
+    },
+    {
+      "name": "VDI Multi-Purpose Lab",
+      "roomNumber": "CSE 301",
+      "extNo": "8923",
+      "relatedPerson": "Mr. F. M. Shahabuddin"
+    },
+    {
+      "name": "Mobile Games & Apps Development Lab",
+      "roomNumber": "CSE 103",
+      "extNo": "8922",
+      "relatedPerson": "Mr. Md. Rokonuzzaman"
+    },
+    {
+      "name": "Natural Language Processing Lab",
+      "roomNumber": "CSE 302",
+      "extNo": "8918",
+      "relatedPerson": "Mr. Khandakar Saiful Islam"
+    },
+    {
+      "name": "Postgraduate Lab",
+      "roomNumber": "CSE 106",
+      "extNo": "8389",
+      "relatedPerson": "Mr. Md. Rokonuzzaman"
+    },
+    {
+      "name": "System Development Center",
+      "roomNumber": "CSE 203",
+      "extNo": "399",
+      "relatedPerson": "Mr. Md. Mizanur Rahman"
+    },
+    {
+      "name": "Rental Library",
+      "roomNumber": "CSE 503",
+      "extNo": "397",
+      "relatedPerson": "Mr. F. M. Shahabuddin"
+    }
+  ],
+  "others": [
+    {
+      "name": "Rental Library",
+      "location": "CSE 503",
+      "availableItems": ["Books", "Journals", "Research Papers"]
+    }
+  ]
+}
