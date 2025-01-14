@@ -1,9 +1,4 @@
-//
-//  ForgotPasswordViewModel.swift
-//  Messenger-SwiftUI
-//
-//  Created by iamblue on 23/12/2023.
-//
+
 
 import Foundation
 

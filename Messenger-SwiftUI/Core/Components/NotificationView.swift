@@ -1,9 +1,4 @@
-//
-//  NotificationView.swift
-//  Messenger-SwiftUI
-//
-//  Created by iamblue on 14/12/2023.
-//
+
 
 import SwiftUI
 

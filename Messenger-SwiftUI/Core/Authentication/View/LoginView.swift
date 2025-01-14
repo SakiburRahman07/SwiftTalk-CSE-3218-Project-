@@ -1,9 +1,4 @@
-//
-//  LoginView.swift
-//  Messenger-SwiftUI
-//
-//  Created by iamblue on 12/12/2023.
-//
+
 
 import SwiftUI
 
@@ -13,158 +8,257 @@ struct LoginView: View {
     }
     
     @EnvironmentObject var coordinator: Coordinator
-    
     @StateObject var viewModel = LoginViewModel()
     @FocusState private var focusedField: FocusedField?
-
+    @State private var appearAnimation = false
+    
     var body: some View {
-        VStack{
-            Spacer()
-            
-            //logo image
-            Image(.messengerLogo)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 140, height: 140)
-                .padding()
-            
-            //text field
-            textfield
-            
-            //forgot password
-            forgotPassword
-            
-            //login button
-            loginButton
-            
-            //facebook login
-            facebookLogin
-            
-            Spacer()
-            
-            //sign up link
-            signupLink
+        GeometryReader { geometry in
+            ZStack {
+                // Gradient Background
+                LinearGradient(
+                    colors: [
+                        Color(.systemBackground),
+                        Color(.systemBlue).opacity(0.1),
+                        Color(.systemBackground)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+                
+                // Main Content
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 25) {
+                        // Logo Section
+                        logoSection
+                            .offset(y: appearAnimation ? 0 : -50)
+                        
+                        // Welcome Text
+                        welcomeText
+                            .offset(y: appearAnimation ? 0 : -30)
+                        
+                        // Input Fields
+                        inputFields
+                            .offset(y: appearAnimation ? 0 : 30)
+                        
+                        // Buttons Section
+                        buttonSection
+                            .offset(y: appearAnimation ? 0 : 50)
+                        
+                        // Divider Section
+                        socialLoginSection
+                            .offset(y: appearAnimation ? 0 : 70)
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, geometry.safeAreaInsets.top + 20)
+                }
+            }
         }
-        .overlay{
+        .overlay {
             LoadingView(show: $viewModel.isLoading)
         }
+        .onAppear {
+            withAnimation(.spring(duration: 0.7)) {
+                appearAnimation = true
+            }
+        }
+    }
+    
+    // MARK: - Components
+    
+    private var logoSection: some View {
+        Image(.messengerLogo)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 100, height: 100)
+            .padding()
+            .background(
+                Circle()
+                    .fill(Color(.systemBackground))
+                    .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
+            )
+    }
+    
+    private var welcomeText: some View {
+        VStack(spacing: 8) {
+            Text("Welcome Back")
+                .font(.system(size: 28, weight: .bold))
+            
+            Text("Sign in to continue")
+                .font(.system(size: 16, weight: .medium))
+                .foregroundColor(.secondary)
+        }
+    }
+    
+    private var inputFields: some View {
+        VStack(spacing: 20) {
+            // Email Field
+            CustomInputField(
+                icon: "envelope.fill",
+                placeholder: "Email",
+                text: $viewModel.email,
+                focusState: focusedField,
+                field: .email
+            )
+            
+            // Password Field
+            CustomInputField(
+                icon: "lock.fill",
+                placeholder: "Password",
+                text: $viewModel.password,
+                isSecure: true,
+                focusState: focusedField,
+                field: .password
+            )
+            
+            // Forgot Password
+                    }
+    }
+    
+    private var buttonSection: some View {
+        VStack(spacing: 15) {
+            Button {
+                Task {
+                    do {
+                        try await viewModel.login()
+                    } catch {
+                        // Handle the error appropriately
+                        print("Login error: \(error.localizedDescription)")
+                    }
+                }
+            } label: {
+                Text("Sign In")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 50)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.blue)
+                            .shadow(color: .blue.opacity(0.3), radius: 5, x: 0, y: 5)
+                    )
+            }
+            .buttonStyle(CustomScaleButtonStyle())
+        }
+    }
+    
+    private var socialLoginSection: some View {
+        VStack(spacing: 20) {
+            // Divider
+            HStack {
+                Line()
+                Text("Or continue with")
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(.secondary)
+                Line()
+            }
+            
+            // Social Login Buttons
+            HStack(spacing: 20) {
+                SocialLoginButton(image: "fbLogo", text: "Facebook")
+                    .onTapGesture {
+                        Alerter.shared.alert = Alert(title: Text("Coming soon"))
+                    }
+            }
+            
+            // Sign Up Link
+            HStack(spacing: 4) {
+                Text("Don't have an account?")
+                    .foregroundColor(.secondary)
+                Button {
+                    coordinator.push(.registrationView)
+                } label: {
+                    Text("Sign Up")
+                        .fontWeight(.bold)
+                        .foregroundColor(.blue)
+                }
+            }
+            .font(.system(size: 14))
+            .padding(.top, 10)
+        }
+        .padding(.top, 20)
+    }
+}
+
+// MARK: - Supporting Views
+
+struct CustomInputField: View {
+    let icon: String
+    let placeholder: String
+    @Binding var text: String
+    var isSecure: Bool = false
+    var focusState: LoginView.FocusedField?
+    let field: LoginView.FocusedField
+    
+    var body: some View {
+        HStack(spacing: 15) {
+            Image(systemName: icon)
+                .foregroundColor(.gray)
+                .frame(width: 20)
+            
+            Group {
+                if isSecure {
+                    SecureField(placeholder, text: $text)
+                } else {
+                    TextField(placeholder, text: $text)
+                }
+            }
+            .textContentType(.oneTimeCode)
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.systemGray6))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(focusState == field ? Color.blue.opacity(0.5) : Color.clear, lineWidth: 2)
+        )
+        .animation(.easeInOut(duration: 0.2), value: focusState)
+    }
+}
+
+struct SocialLoginButton: View {
+    let image: String
+    let text: String
+    
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(image)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 20, height: 20)
+            
+            Text(text)
+                .font(.system(size: 14, weight: .semibold))
+        }
+        .padding(.horizontal, 40)
+        .padding(.vertical, 12)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.systemGray6))
+        )
+    }
+}
+
+struct Line: View {
+    var body: some View {
+        Rectangle()
+            .fill(Color(.systemGray4))
+            .frame(height: 1)
+    }
+}
+
+struct CustomScaleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.97 : 1)
+            .animation(.easeInOut(duration: 0.2), value: configuration.isPressed)
     }
 }
 
 #Preview {
     LoginView()
         .environmentObject(Coordinator.shared)
-}
-
-extension LoginView{
-    private var textfield: some View{
-        VStack(spacing: 12){
-            TextField("Enter your email", text: $viewModel.email)
-                .focused($focusedField, equals: .email)
-                .font(.regular(size: 16))
-                .padding(12)
-                .background(Color(.systemGray6))
-                .cornerRadius(10)
-                .padding(.horizontal, 24)
-            
-            SecureField("Enter your password", text: $viewModel.password)
-                .focused($focusedField, equals: .password)
-                .font(.regular(size: 16))
-                .padding(12)
-                .background(Color(.systemGray6))
-                .cornerRadius(10)
-                .padding(.horizontal, 24)
-        }
-        .onSubmit {
-            login()
-        }
-    }
-    
-    private var forgotPassword: some View{
-        Button{
-            coordinator.push(.forgotPasswordView)
-        }label: {
-            Text("Forgot password?")
-                .font(.bold(size: 13))
-                .padding(.top)
-                .padding(.trailing,28)
-        }
-        .hAlign(.trailing)
-    }
-    
-    private var loginButton: some View{
-        Button{
-            login()
-        }label: {
-            Text("Login")
-                .font(.semibold(size: 14))
-                .foregroundStyle(.white)
-                .frame(width: 360, height: 44)
-                .background(Color(.systemBlue))
-                .cornerRadius(10)
-        }
-        .padding(.vertical)
-    }
-    
-    private var facebookLogin: some View{
-        VStack{
-            HStack{
-                Rectangle()
-                    .frame(width: (UIScreen.main.bounds.width / 2) - 40, height: 0.5 )
-                
-                Text("OR")
-                    .font(.semibold(size: 12))
-                
-                Rectangle()
-                    .frame(width: (UIScreen.main.bounds.width / 2) - 40, height: 0.5 )
-            }
-            .foregroundStyle(.gray).opacity(0.8)
-            
-            HStack{
-                Image(.fbLogo)
-                    .resizable()
-                    .frame(width: 20, height: 20)
-                
-                Text("Continue with fabebook")
-                    .font(.bold(size: 13))
-                    .foregroundStyle(.blue)
-            }
-            .padding(.top, 8)
-        }
-        .onTapGesture {
-            Alerter.shared.alert = Alert(title: Text("This feature is being updated in the future"))
-        }
-    }
-    
-    private var signupLink: some View{
-        VStack{
-            Divider()
-            
-            HStack(spacing: 3){
-                Text("Don't have an account?")
-                    .font(.regular(size: 13))
-                
-                Text("Sign up")
-                    .font(.bold(size: 13))
-            }
-            .foregroundStyle(.blue)
-            .padding(.vertical)
-            .contentShape(Rectangle())
-            .onTapGesture {
-                coordinator.push(.registrationView)
-            }
-        }
-    }
-    
-    //MARK: - funcs
-    private func login(){
-        if viewModel.email.isEmpty {
-            focusedField = .email
-        } else if viewModel.password.isEmpty {
-            focusedField = .password
-        } else {
-            focusedField = nil
-            Task { try await viewModel.login() }
-        }
-    }
 }

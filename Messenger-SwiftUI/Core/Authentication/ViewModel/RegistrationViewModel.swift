@@ -1,9 +1,3 @@
-//
-//  RegistrationViewModel.swift
-//  Messenger-SwiftUI
-//
-//  Created by iamblue on 13/12/2023.
-//
 
 import Foundation
 

@@ -1,9 +1,4 @@
-//
-//  ContentView.swift
-//  Messenger-SwiftUI
-//
-//  Created by iamblue on 12/12/2023.
-//
+
 
 import SwiftUI
 

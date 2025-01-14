@@ -1,10 +1,3 @@
-//
-//  ProfileView.swift
-//  Messenger-SwiftUI
-//
-//  Created by iamblue on 13/12/2023.
-//
-
 import SwiftUI
 import PhotosUI
 
@@ -27,45 +20,65 @@ struct ProfileView: View {
     }
     
     var body: some View {
-        VStack{
-            if isShowDarkMode{
+        VStack {
+            if isShowDarkMode {
                 ChangeDarkLightView(isShowDarkMode: $isShowDarkMode)
                     .transition(.move(edge: .trailing))
-            }else{
-                VStack{
-                    //header
+            } else {
+                VStack(spacing: 0) {
+                    // header
                     header
+                        .padding(.bottom, 20)
                     
-                    //list
-                    List{
-                        Section{
-                            ForEach(SettingOptionsViewModel.allCases){ option in
-                                HStack{
-                                    Image(systemName: option.imageName)
-                                        .resizable()
-                                        .frame(width: 24, height: 24)
-                                        .foregroundStyle(option.imageBackgroundColor)
+                    // list
+                    List {
+                        Section {
+                            ForEach(SettingOptionsViewModel.allCases) { option in
+                                HStack(spacing: 16) {
+                                    ZStack {
+                                        Circle()
+                                            .fill(option.imageBackgroundColor.opacity(0.15))
+                                            .frame(width: 36, height: 36)
+                                        
+                                        Image(systemName: option.imageName)
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 18, height: 18)
+                                            .foregroundStyle(option.imageBackgroundColor)
+                                    }
                                     
                                     Text(option.title)
                                         .foregroundStyle(.text)
                                         .font(.regular(size: 16))
+                                    
+                                    Spacer()
+                                    
+                                    Image(systemName: "chevron.right")
+                                        .foregroundStyle(.gray.opacity(0.5))
+                                        .font(.system(size: 14))
                                 }
+                                .padding(.vertical, 8)
                                 .onTapGesture {
                                     optionOntap(option: option)
                                 }
                             }
                         }
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
                         
-                        Section{
+                        Section {
                             logout
-                            
                             deleteAccount
                         }
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
                     }
+                    .listStyle(.plain)
+                    .scrollContentBackground(.hidden)
                 }
                 .transition(.move(edge: .leading))
                 .opacity(isShowDarkMode ? 0 : 1)
-                .overlay{
+                .overlay {
                     LoadingView(show: $viewModel.isLoading)
                 }
             }
@@ -96,69 +109,76 @@ struct ProfileView: View {
 
 extension ProfileView{
     private var header: some View{
-        VStack{
-            HStack{
-                Image(systemName: "chevron.left")
-                    .imageScale(.medium)
-                    .foregroundStyle(.text)
-                
-                Text("Back")
-                    .font(.semibold(size: 16))
-                    .foregroundStyle(.text)
+        VStack(spacing: 24) {
+            HStack {
+                Button {
+                    coordinator.pop()
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                            .imageScale(.medium)
+                            .foregroundStyle(.text)
+                        
+                        Text("Back")
+                            .font(.semibold(size: 16))
+                            .foregroundStyle(.text)
+                    }
+                    .padding(8)
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(10)
+                }
                 
                 Spacer()
                 
-                if viewModel.profileImage != nil{
-                    Button{
-//                        viewModel.upLoadAvatar()
-                    }label: {
+                if viewModel.profileImage != nil {
+                    Button {
+                        // viewModel.upLoadAvatar()
+                    } label: {
                         Text("Save")
                             .font(.semibold(size: 16))
                             .foregroundStyle(.blue)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(Color.blue.opacity(0.1))
+                            .cornerRadius(10)
                     }
                 }
             }
-            .hAlign(.leading)
             .padding(.horizontal)
-            .contentShape(Rectangle())
-            .onTapGesture {
-                coordinator.pop()
-            }
             
             avatar
         }
     }
     
     private var avatar: some View{
-        VStack{
-            PhotosPicker(selection: $viewModel.selectedItem){
-                VStack{
-                    if let profileImage = viewModel.profileImage{
+        VStack(spacing: 16) {
+            PhotosPicker(selection: $viewModel.selectedItem) {
+                VStack {
+                    if let profileImage = viewModel.profileImage {
                         Image(uiImage: profileImage)
                             .resizable()
                             .scaledToFill()
-                            .frame(width: 100, height: 100)
+                            .frame(width: 120, height: 120)
                             .clipShape(Circle())
-                    }else{
+                            .shadow(color: .gray.opacity(0.2), radius: 8, x: 0, y: 4)
+                    } else {
                         CircularProfileImageView(user: user, size: .xxLarge)
+                            .shadow(color: .gray.opacity(0.2), radius: 8, x: 0, y: 4)
                     }
                 }
                 .overlay {
-                    ZStack(alignment: .bottomTrailing){
-                        Color.black.opacity(0.1)
-                            .clipShape(Circle())
+                    ZStack(alignment: .bottomTrailing) {
+                        Color.clear
                         
-                        VStack{
-                            Rectangle()
-                                .foregroundStyle(.black)
-                                .cornerRadius(3)
-                        }
-                        .frame(width: 25, height: 20)
-                        .overlay {
-                            Image(systemName: "camera.fill")
-                                .imageScale(.medium)
-                                .foregroundStyle(.white)
-                        }
+                        Circle()
+                            .fill(Color.blue)
+                            .frame(width: 36, height: 36)
+                            .overlay {
+                                Image(systemName: "camera.fill")
+                                    .imageScale(.medium)
+                                    .foregroundStyle(.white)
+                            }
+                            .offset(x: 6, y: 6)
                     }
                 }
             }
@@ -168,103 +188,106 @@ extension ProfileView{
     }
     
     private var name: some View{
-        HStack(spacing: 10){
-            if showingChangeName{
-                HStack{
+        HStack(spacing: 10) {
+            if showingChangeName {
+                HStack {
                     TextField("Name", text: $viewModel.nameChange)
                         .keyboardType(.default)
                         .textContentType(.name)
                         .foregroundStyle(.text)
                         .focused($focusedField, equals: .newName)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: 160)
                     
-                    Button{
-                        Task{
+                    Button {
+                        Task {
                             try await viewModel.changeNameUser()
-                            
                             withAnimation {
                                 focusedField = nil
                                 showingChangeName.toggle()
                             }
                         }
-                    }label: {
-                        Text("OK")
+                    } label: {
+                        Text("Save")
                             .font(.semibold(size: 14))
-                            .foregroundStyle(.text)
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(Color.blue)
+                            .cornerRadius(8)
                     }
                 }
-                .frame(width: 200, alignment: .center)
-            }else{
-                Text("\(user?.fullname ?? "")")
-                    .font(.semibold(size: 20))
+            } else {
+                Text(user?.fullname ?? "")
+                    .font(.semibold(size: 24))
                     .foregroundStyle(.text)
                 
-                Image(systemName: "pencil.and.outline")
-                    .imageScale(.medium)
-                    .foregroundStyle(.text)
-                    .onTapGesture {
-                        withAnimation {
-                            showingChangeName.toggle()
-                            focusedField = .newName
-                        }
+                Button {
+                    withAnimation {
+                        showingChangeName.toggle()
+                        focusedField = .newName
                     }
+                } label: {
+                    Image(systemName: "pencil.circle.fill")
+                        .imageScale(.large)
+                        .foregroundStyle(.blue)
+                }
             }
         }
-        .padding(.top,5)
     }
     
-    
     private var logout: some View{
-        Button{
+        Button {
             showingLogout.toggle()
-        }label: {
-            Text("Log out")
-                .font(.regular(size: 16))
-                .foregroundStyle(.red)
+        } label: {
+            HStack {
+                Image(systemName: "rectangle.portrait.and.arrow.right")
+                    .foregroundStyle(.red)
+                Text("Log out")
+                    .font(.regular(size: 16))
+                    .foregroundStyle(.red)
+                Spacer()
+            }
+            .padding(.vertical, 8)
         }
         .alert(isPresented: $showingLogout) {
             Alert(
                 title: Text("Confirm logout"),
                 message: Text("Are you sure want to sign out?"),
-                primaryButton: .default(
-                    Text("Cancel"),
-                    action: {}
-                ),
-                secondaryButton: .destructive(
-                    Text("Logout"),
-                    action: {
-                        AuthService.shared.signOut()
-                        coordinator.pop()
-                    }
-                )
+                primaryButton: .default(Text("Cancel")),
+                secondaryButton: .destructive(Text("Logout")) {
+                    AuthService.shared.signOut()
+                    coordinator.pop()
+                }
             )
         }
     }
     
     private var deleteAccount: some View{
-        Button{
+        Button {
             showingAlertDeleteAccount.toggle()
-        }label: {
-            Text("Delete account")
-                .font(.regular(size: 16))
-                .foregroundStyle(.red)
+        } label: {
+            HStack {
+                Image(systemName: "trash.fill")
+                    .foregroundStyle(.red)
+                Text("Delete account")
+                    .font(.regular(size: 16))
+                    .foregroundStyle(.red)
+                Spacer()
+            }
+            .padding(.vertical, 8)
         }
         .alert(isPresented: $showingAlertDeleteAccount) {
             Alert(
                 title: Text("Confirm account deletion"),
                 message: Text("Once your account is deleted, you will not be able to restore it. Are you sure you want to delete it?"),
-                primaryButton: .default(
-                    Text("Cancel"),
-                    action: {}
-                ),
-                secondaryButton: .destructive(
-                    Text("Delete"),
-                    action: {
-                        Task{
-                            try await AuthService.shared.deleteUserData()
-                            coordinator.pop()
-                        }
+                primaryButton: .default(Text("Cancel")),
+                secondaryButton: .destructive(Text("Delete")) {
+                    Task {
+                        try await AuthService.shared.deleteUserData()
+                        coordinator.pop()
                     }
-                )
+                }
             )
         }
     }
